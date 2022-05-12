@@ -1,0 +1,107 @@
+.ui-form{
+    display: flex;
+    justify-content: center;
+    height: 600px;
+    align-items: center;
+}
+
+.catalogo-box{
+    border: 3px solid #000000;
+    border-radius: 6px;
+    padding: 10px;
+    height: 526px;
+}
+
+.form{
+   width: 400px;
+   height: 500px;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   align-items: center;
+   padding: 15px;
+   color: #ffffff;
+}
+
+.input-text{
+    display: flex;
+    width: 250px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 5px 0;
+}
+
+
+
+.form label{
+    font-weight: bold;
+    
+}
+
+input, select{
+    border: 2px solid #000;
+    border-radius: 6px;
+    background-color: black;
+    color: #ffffff;
+    margin: 5px 0;
+}
+
+
+.input-text select{
+    appearance: none;
+}
+
+.box-button{
+   display: flex;
+   justify-content: center;
+}
+
+button{
+    position: relative;
+    width: 80px;
+    background-color: black;
+    color: #ffffff;
+    border-radius: 6px;
+    border: none;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+button::after{
+    content: '';
+    background: #f1f1f1;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+button:active::after{
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s;
+}
+
+button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+div.box-button{
+    width: 250px;
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    
+}
+
+div.box-button button{
+    height: 30px;
+}
