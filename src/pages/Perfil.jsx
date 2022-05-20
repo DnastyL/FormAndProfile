@@ -7,25 +7,14 @@ import { useNavigate } from "react-router-dom";
 
 export const Perfil = () => {
   let navigate = useNavigate();
-  const { usuario } = useContext(UsuarioContext); //Dados do context
-  const [dados] = useState(   //verificação de dados nulos no localstorage 
-    localStorage.getItem('usuario') == null || localStorage.usuario === ''
-      ? usuario
-      : JSON.parse(localStorage.usuario)
-  );
+  const { usuario, logout } = useContext(UsuarioContext); //Dados do context
 
-  const [render, setRender] = useState(false); //Efeito hover no react
-
-  const [img, setImg] = useState(
+  const [img, setImg] = useState(() => {
     //renderização condicional
-    localStorage.getItem('image') != null ?  (
-      localStorage.image !== '' ? <img alt="profile" src={localStorage.image} /> : <ImUser></ImUser>
-    ) :  (
-      <ImUser></ImUser>
-    )
-  );
+    const image = localStorage.getItem("image");
 
-  console.log(dados);
+    return image ? <img alt="profile" src={image} /> : <ImUser />;
+  });
 
   function inputFile() {
     let input = document.createElement("input");
@@ -45,45 +34,32 @@ export const Perfil = () => {
     <div className="main-box">
       <div className="perfil-box">
         <div className="titles">
-          <h4>Bem vindo, {dados.nome}</h4>
+          <h4>Bem vindo, {usuario.nome}</h4>
         </div>
         <div className="menu-box">
           <div className="ui-menu">
             <div className="profile">
-              <div
-                className="icon-box"
-                onMouseEnter={() => setRender(true)}
-                onMouseLeave={() => setRender(false)}
-              >
+              <div className="icon-box">
                 <span className="user-icon">{img}</span>
-                {render ? (
-                  <span className="gallery-icon" onClick={inputFile}>
-                    <MdOutlineAddPhotoAlternate></MdOutlineAddPhotoAlternate>
-                  </span>
-                ) : (
-                  ""
-                )}
+                
+                <span className="gallery-icon" onClick={inputFile}>
+                  <MdOutlineAddPhotoAlternate />
+                </span>
               </div>
               <div className="dados-box">
                 <div className="description-title">
-                  <h4>Nome: {dados.nome}</h4>
-                  <p>Email: {dados.email}</p>
+                  <h4>Nome: {usuario.nome}</h4>
+                  <p>Email: {usuario.email}</p>
                 </div>
                 <div className="ui-dados">
                   <p>Telefone: {usuario.telefone}</p>
-                  <p>Sexo: {dados.sexo}</p>
+                  <p>Sexo: {usuario.sexo}</p>
                 </div>
               </div>
               <div className="box-button">
                 <button
                   onClick={() => {
-                    localStorage.image = "";
-                    localStorage.usuario = "";
-                    usuario.nome = '';
-                    usuario.email = '';
-                    usuario.cpf = '';
-                    usuario.telefone = '';
-                    usuario.sexo = ''
+                    logout();
                     navigate(`/`);
                   }}
                 >

@@ -8,3 +8,5 @@ Verificação de dados digitados nos campos de Nome e Email com regex;
 
 Validação de todos os inputs do formulário e na escolha da foto de perfil;
 
+Protegendo Rotas;
+

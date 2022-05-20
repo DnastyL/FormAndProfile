@@ -5,57 +5,62 @@ import "./formulario.css";
 import { useNavigate } from "react-router-dom";
 import { UsuarioContext } from "../../context/UserContext";
 
-export const updateLocalStorage = (usuario) => {
-  localStorage.setItem('usuario', JSON.stringify(usuario))
-}
 
-function verificationNameEmail(value, name, setUsuario, setValidEmail, usuario) {
+function verificationNameEmail(value, name, setUser, setValidEmail, user) {
   if (name === "nome"){
     let valueReplace = value.replace(/\d/g, "");
-    setUsuario({
-      ...usuario,
+    setUser({
+      ...user,
       [name]: valueReplace,
     });
   }
   if(name === 'email'){
     let validEmail = value.toLocaleLowerCase().match(/^[\w.-_]+@[\w.-_]+\.[a-z]{3,}/)
       setValidEmail(validEmail);
-      setUsuario({
-        ...usuario,
+      setUser({
+        ...user,
         [name]: value,
       })
+      console.log(user)
+      console.log(validEmail)
   }
 }
 
 export const Formulario = () => {
-  const { usuario, setUsuario } = useContext(UsuarioContext);
+  const { login } = useContext(UsuarioContext);
+  const [user, setUser] = useState({
+    nome: "",
+    email: "",
+    cpf: "",
+    sexo: "",
+    telefone: "",
+  });
+  
   const [ validEmail, setValidEmail] = useState(false);
   const onlyNumbers = (str) => str.replace(/[^0-9]/g, '');
   let navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { value, name } = e.target;
-    
-
     if (name === "cpf" || name === "telefone") {
-      setUsuario({
-        ...usuario,
+      setUser({
+        ...user,
         [name]: onlyNumbers(value),
       });
     }if(name === "sexo"){
-      setUsuario({
-        ...usuario,
+      setUser({
+        ...user,
         [name]: value,
-      })
+    })
     } 
     else {
-      verificationNameEmail(value, name, setUsuario, setValidEmail, usuario);
+      verificationNameEmail(value, name, setUser, setValidEmail, user);
     }
     
   };
 
 
-  //usuario.nome.replace(/\d/g, "")
+  //user.nome.replace(/\d/g, "")
 
   return (
     <div className="ui-form">
@@ -69,7 +74,7 @@ export const Formulario = () => {
               placeholder="Nome"
               autoComplete="off"
               name="nome"
-              value={usuario.nome}
+              value={user.nome}
               onChange={handleOnChange}
             />
           </div>
@@ -79,21 +84,21 @@ export const Formulario = () => {
               type="text"
               placeholder="Email"
               autoComplete="off"
-              value={usuario.email}
+              value={user.email}
               name="email"
               onChange={handleOnChange}
             />
-            {!validEmail && usuario.email !== '' ? <span className="seila">E-mail inválido</span>: ""}
+            {!validEmail && user.email !== '' ? <span className="seila">E-mail inválido</span>: ""}
           </div>
           <div className="input-text">
             <label>CPF:</label>
-            <MaskCPF name="cpf" value={usuario.cpf} onChange={handleOnChange} />
-            {usuario.cpf && (
+            <MaskCPF name="cpf" value={user.cpf} onChange={handleOnChange} />
+            {user.cpf && (
               <nav className="box-button">
                 <button
                   onClick={() =>
-                    setUsuario({
-                      ...usuario,
+                    setUser({
+                      ...user,
                       cpf: "",
                     })
                   }
@@ -107,13 +112,13 @@ export const Formulario = () => {
             <label>Telefone:</label>
             <MaskTel
               name="telefone"
-              value={usuario.telefone}
+              value={user.telefone}
               onChange={handleOnChange}
             />
           </div>
           <div className="input-text">
             <label>Sexo</label>
-            <select name="sexo" value={usuario.sexo} onChange={handleOnChange}>
+            <select name="sexo" value={user.sexo} onChange={handleOnChange}>
               <option> </option>
               <option value="Masculino">Masculino</option>
               <option value="Feminino">Feminino</option>
@@ -125,19 +130,18 @@ export const Formulario = () => {
               id="botao"
               type="submit"
               disabled={
-                !usuario.nome ||
-                !validEmail ||
-                usuario.cpf.length < 11 ||
-                !usuario.sexo ||
-                usuario.telefone.length < 13
+                !user.nome ||
+                user.cpf.length < 11 ||
+                !user.sexo ||
+                user.telefone.length < 13
               }
               onClick={() => {
                 if(!validEmail){
                   alert('Email inválido')
                 }
                 else{
-                  navigate(`/perfil/${usuario.nome}`);
-                  updateLocalStorage(usuario);
+                  navigate(`/perfil/${user.nome}`);
+                  login(user);
                 }
               }}
             >

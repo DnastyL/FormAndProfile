@@ -39,6 +39,11 @@
     height: 80px;
     color: #000;
     margin-bottom: 20px;
+    position: relative;
+}
+
+.icon-box:hover .gallery-icon{
+    display: block;
 }
 
 .dados-box{
@@ -79,10 +84,11 @@
 .gallery-icon{
     height: 26px;
     width: 27px;
-    position: relative;
-    right: 23px;
+    position: absolute;
+    right: 0;
     background-color: #fff;
     border-radius: 20px;
+    display: none;
 }
 
 .gallery-icon svg{
@@ -94,4 +100,3 @@
 .gallery-icon svg:hover{
     cursor: pointer;
 }
-
