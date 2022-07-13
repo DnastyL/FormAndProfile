@@ -21,8 +21,6 @@ function verificationNameEmail(value, name, setUser, setValidEmail, user) {
         ...user,
         [name]: value,
       })
-      console.log(user)
-      console.log(validEmail)
   }
 }
 
